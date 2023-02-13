@@ -1,0 +1,4 @@
+{
+    "nbnPlanIcon": "[data-testid=\"picture__the-image\"]",
+    "checkYourAddress": "[data-testid=\"primary-button\"]"
+}
