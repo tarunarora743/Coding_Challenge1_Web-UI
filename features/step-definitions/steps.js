@@ -2,35 +2,60 @@ const { Given, When, Then } = require('@wdio/cucumber-framework');
 var pageLibrary = require('../pageobjects/pageLibrary.json')
 
 
-const LoginPage = require('../pageobjects/login.page');
-const SecurePage = require('../pageobjects/secure.page');
-
-const pages = {
-    login: LoginPage
-}
-
-Given(/^I am on the (\w+) page$/, async (page) => {
+Given(/^I am on the belong homePage$/, async () => {
     await browser.url('http://www.belong.com.au/');
-    await browser.pause(5000);
+    await browser.pause(3000);
 });
-
-When(/^I login with (\w+) and (.+)$/, async (username, password) => {
-    await LoginPage.login(username, password)
-});
-
-
 
 When(/^I verify that element "([^"]*)?" is displayed$/, async (selector) => {
     var path = `pageLibrary.${selector}` ;
     selector = await eval(path) ;
     elem = await $(selector);
-    await expect(elem).toBeDisplayed() ;
-
+    await elem.waitForExist({ timeout: 15000 })
+    await expect(elem).toBeDisplayed();
 });
 
+When(/^I verify that URL contains "([^"]*)?" text$/, async (text) => {
+    const URL = await browser.getUrl();
+    expect(URL).toContain(text);
+});
 
-Then(/^I should see a flash message saying (.*)$/, async (message) => {
-    await expect(SecurePage.flashAlert).toBeExisting();
-    await expect(SecurePage.flashAlert).toHaveTextContaining(message);
+When(/^I enter "([^"]*)?" value in the "([^"]*)?" box$/, async (text, selector) => {
+    var path = `pageLibrary.${selector}` ;
+    selector = await eval(path) ;
+    const inputBox = await $(selector);
+    await inputBox.setValue(text);
+});
+
+When(/^I click on "([^"]*)?" button$/, async (selector) => {
+    var path = `pageLibrary.${selector}` ;
+    selector = await eval(path) ;
+    const button = await $(selector);
+    await button.click();
+});
+
+Then(/^I verify that the top result in "([^"]*)?" matches the text "([^"]*)?"$/, async (selector, text) => {
+    var path = `pageLibrary.${selector}` ;
+    selector = await eval(path) ;
+    const list = await $(selector);
+    const topResult = await list.$$('li')[0]
+    const actualText = await topResult.getText();
+    expect(actualText).toBe(text);
+});
+
+Then(/^I verify that the "([^"]*)?" matches the text "([^"]*)?"$/, async (selector, text) => {
+    var path = `pageLibrary.${selector}` ;
+    selector = await eval(path) ;
+    var heading = await $(selector).$$('h1')[0]
+    let actualText = await heading.getText();
+    expect(actualText).toBe(text);
+});
+
+Then(/^I select the top result from "([^"]*)?"$/, async (selector) => {
+    var path = `pageLibrary.${selector}` ;
+    selector = await eval(path) ;
+    const list = await $(selector);
+    const topResult = await list.$$('li')[0]
+    await topResult.click();
 });
 

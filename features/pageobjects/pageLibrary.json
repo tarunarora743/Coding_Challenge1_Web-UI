@@ -1,4 +1,10 @@
 {
     "nbnPlanIcon": "[data-testid=\"picture__the-image\"]",
-    "checkYourAddress": "[data-testid=\"primary-button\"]"
+    "checkYourAddress": "[data-testid=\"primary-button\"]",
+    "addressSearchBar": "[id=\"queryInput\"]",
+    "addressQueryList": "[id=\"queryList\"]",
+    "reviewYourAddress": "[data-testid=\"address-summary\"]",
+    "checkAddress": "[data-testid=\"step-address-lookup__submit-button\"]",
+    "fistBumpImage": "[data-testid=\"picture__the-image\"]",
+    "servicibilityHeader": "[data-testid=\"step-serviceability-details\"]"
 }
